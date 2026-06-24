@@ -1,0 +1,155 @@
+/**
+  |============================
+  | include css partials with
+  | default @import url()
+  |============================
+*/
+/* Common styles */
+@import url('./reset.css');
+@import url('./base.css');
+
+/* .gallery-link {
+  display: flex;
+  flex-direction: column;
+} */
+
+/* .gallery-link > img {
+  display: block;
+  width: 100%;
+} */
+/* .gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding-top: 32px;
+  padding-left: 156px;
+  padding-right: 156px;
+} */
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding-top: 36px;
+}
+
+.form > label > input {
+  width: 272px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  outline: none;
+  padding: 8px 0px 8px 16px;
+
+  font-weight: 400;
+  font-size: 16px;
+
+  /* line-height: 24px; */
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #808080;
+}
+
+.form > label > input:hover {
+  border-color: #000;
+}
+
+.form > label > input:focus {
+  border-color: #4e75ff;
+  color: #2e2f42;
+}
+
+.form > button {
+  border-radius: 8px;
+  border: 0;
+  padding: 8px 16px;
+  width: 75px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 10px;
+  background: #4e75ff;
+
+  font-weight: 500;
+  font-size: 16px;
+
+  /* line-height: 24px; */
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.loaderBlock {
+  display: flex;
+  justify-content: center;
+}
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: #ff3d00;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.gallery-link > img {
+  height: 200px;
+  width: 100%;
+  border: 1px solid black;
+}
+.gallery-link {
+  width: 360px;
+}
+
+.image-info {
+  display: flex;
+  column-gap: 28px;
+  margin-left: 20px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.image-info > div {
+  text-align: center;
+}
+.image-info > div > span {
+  font-weight: 600;
+  font-size: 12px;
+
+  line-height: 1.33333;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
+
+.image-info > div > p {
+  font-weight: 400;
+  font-size: 12px;
+
+  line-height: 2;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
+
+.hidden {
+  display: none;
+}
