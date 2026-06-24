@@ -35,7 +35,8 @@ export function createGallery(images) {
           </div>
         </a>`
   );
-  galleryElement.innerHTML = linksList.join('');
+  // galleryElement.innerHTML = linksList.join('');
+  galleryElement.insertAdjacentHTML('beforeend', linksList.join(''));
   gallery.refresh();
 }
 
