@@ -63,10 +63,15 @@ loadMoreButton.addEventListener('click', handleLoadMoreButton);
 
 async function handleLoadMoreButton() {
   showLoader();
+  hideLoadMoreButton();
   try {
-    updateLoadMoreButton();
+    currentPage++;
     const data = await fetchData(inputtedText, currentPage);
     createGallery(data.hits);
+    const cardElement = document.querySelector('.gallery-link');
+    const cardSize = cardElement.getBoundingClientRect();
+    window.scrollBy({ top: cardSize.height * 2, behavior: 'smooth' });
+    updateLoadMoreButton();
   } catch {
     iziToast.error({
       message: 'Something went wrong with request',
@@ -84,9 +89,5 @@ function updateLoadMoreButton() {
     });
   } else {
     showLoadMoreButton();
-    currentPage++;
-    const cardElement = document.querySelector('.gallery-link');
-    const cardSize = cardElement.getBoundingClientRect();
-    window.scrollBy({ top: cardSize.height * 2, behavior: 'smooth' });
   }
 }
