@@ -1,5 +1,4 @@
 import axios from 'axios';
-let key = '';
 export default async function getImagesByQuery(query, page) {
   const response = await axios.get('https://pixabay.com/api/', {
     params: {
@@ -12,12 +11,5 @@ export default async function getImagesByQuery(query, page) {
       per_page: 15,
     },
   });
-  if (key === query || key === '') {
-    page++;
-    key = query;
-  } else {
-    page = 1;
-    key = '';
-  }
   return response.data;
 }

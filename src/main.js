@@ -5,6 +5,8 @@ import {
   clearGallery,
   showLoader,
   hideLoader,
+  hideLoadMoreButton,
+  showLoadMoreButton,
 } from './js/render-functions.js';
 
 import 'izitoast/dist/css/iziToast.min.css';
@@ -14,39 +16,35 @@ const inputElement = formElement.querySelector('[name="search-text"]');
 const loadMoreButton = document.querySelector('.load-more');
 formElement.addEventListener('submit', handleSubmit);
 
-let inputtedValue = '';
+let currentPage = 1;
+let countPages = 1;
+const countImagesPerPage = 15;
+
+let inputtedText = '';
 
 function handleSubmit(e) {
+  currentPage = 1;
   e.preventDefault();
-  loadMoreButton.classList.add('hidden');
   clearGallery();
   showLoader();
-  const inputtedText = inputElement.value.trim();
-  inputtedValue = inputtedText;
+  inputtedText = inputElement.value.trim();
   if (inputtedText) {
     let appData = [];
-    fetchData(inputtedText)
+    fetchData(inputtedText, currentPage)
       .then(data => {
-        if (data.hits.length === 15) {
-          loadMoreButton.classList.remove('hidden');
-        }
-        if (data.hits.length === 0) {
-          iziToast.error({
-            message:
-              'Sorry, there are no images matching your search query. Please try again!',
-          });
-        } else {
-          appData = data.hits;
-          console.log(appData);
-          createGallery(appData);
-        }
+        countPages = data.totalHits / countImagesPerPage;
+        appData = data.hits;
+        createGallery(appData);
       })
       .catch(error => {
         iziToast.error({
           message: 'Something went wrong with request',
         });
       })
-      .finally(() => hideLoader());
+      .finally(() => {
+        hideLoader();
+        updateLoadMoreButton();
+      });
   } else {
     hideLoader();
     iziToast.error({
@@ -59,9 +57,24 @@ loadMoreButton.addEventListener('click', handleLoadMoreButton);
 
 function handleLoadMoreButton() {
   showLoader();
-  fetchData(inputtedValue).then(data => {
+  fetchData(inputtedText, currentPage).then(data => {
     createGallery(data.hits);
-    console.log(data.totalHits);
+    updateLoadMoreButton();
   });
   hideLoader();
+}
+
+function updateLoadMoreButton() {
+  if (countPages <= currentPage) {
+    hideLoadMoreButton();
+    iziToast.error({
+      message: "We're sorry, but you've reached the end of search results.",
+    });
+  } else {
+    showLoadMoreButton();
+    currentPage++;
+    const cardElement = document.querySelector('.gallery-link');
+    const cardSize = cardElement.getBoundingClientRect();
+    window.scrollBy({ top: cardSize.height * 2, behavior: 'smooth' });
+  }
 }

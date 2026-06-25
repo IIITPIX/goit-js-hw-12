@@ -8,24 +8,6 @@
 @import url('./reset.css');
 @import url('./base.css');
 
-/* .gallery-link {
-  display: flex;
-  flex-direction: column;
-} */
-
-/* .gallery-link > img {
-  display: block;
-  width: 100%;
-} */
-/* .gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  padding-top: 32px;
-  padding-left: 156px;
-  padding-right: 156px;
-} */
-
 .form {
   display: flex;
   justify-content: center;
