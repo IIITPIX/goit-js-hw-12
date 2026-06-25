@@ -22,29 +22,35 @@ const countImagesPerPage = 15;
 
 let inputtedText = '';
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
   currentPage = 1;
+  hideLoadMoreButton();
   e.preventDefault();
   clearGallery();
   showLoader();
   inputtedText = inputElement.value.trim();
   if (inputtedText) {
     let appData = [];
-    fetchData(inputtedText, currentPage)
-      .then(data => {
-        countPages = data.totalHits / countImagesPerPage;
-        appData = data.hits;
-        createGallery(appData);
-      })
-      .catch(error => {
+    try {
+      const data = await fetchData(inputtedText, currentPage);
+      if (data.totalHits === 0 || data.hits.length === 0) {
         iziToast.error({
-          message: 'Something went wrong with request',
+          message: 'There are not Images',
         });
-      })
-      .finally(() => {
-        hideLoader();
-        updateLoadMoreButton();
+        return;
+      }
+
+      countPages = Math.ceil(data.totalHits / countImagesPerPage);
+      appData = data.hits;
+      createGallery(appData);
+      updateLoadMoreButton();
+    } catch {
+      iziToast.error({
+        message: 'Something went wrong with request',
       });
+    } finally {
+      hideLoader();
+    }
   } else {
     hideLoader();
     iziToast.error({
@@ -55,13 +61,19 @@ function handleSubmit(e) {
 
 loadMoreButton.addEventListener('click', handleLoadMoreButton);
 
-function handleLoadMoreButton() {
+async function handleLoadMoreButton() {
   showLoader();
-  fetchData(inputtedText, currentPage).then(data => {
-    createGallery(data.hits);
+  try {
     updateLoadMoreButton();
-  });
-  hideLoader();
+    const data = await fetchData(inputtedText, currentPage);
+    createGallery(data.hits);
+  } catch {
+    iziToast.error({
+      message: 'Something went wrong with request',
+    });
+  } finally {
+    hideLoader();
+  }
 }
 
 function updateLoadMoreButton() {
